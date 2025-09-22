@@ -638,6 +638,7 @@ class HFCausalTrainerBuilder(TrainerBuilderBase):
 
         if self.cfg.reward_model:
             training_arguments_kwargs["max_length"] = self.cfg.sequence_len
+            
 
         # Handle custom optimizer
         custom_supported_optimizers = [opt.value for opt in CustomSupportedOptimizers]
@@ -779,6 +780,10 @@ class HFCausalTrainerBuilder(TrainerBuilderBase):
 
         if self.cfg.reward_model:
             training_args_cls = AxolotlRewardConfig
+            if self.cfg.center_rewards_coefficient is not None:
+                training_arguments_kwargs["center_rewards_coefficient"] = (
+                    self.cfg.center_rewards_coefficient
+                )
         elif self.cfg.process_reward_model:
             training_args_cls = AxolotlPRMConfig
         else:
